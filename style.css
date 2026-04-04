@@ -362,8 +362,15 @@ body.dark-mode .quote-card {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.panel-grid { grid-template-columns: 1.08fr 0.92fr; }
-.two-column { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.panel-grid {
+  grid-template-columns: 1.08fr 0.92fr;
+  align-items: start;
+}
+
+.two-column {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
 
 .converter-card, .reference-card, .rule-card, .info-panel, .comparison-panel, .timeline-card {
   border-radius: 26px;
@@ -610,16 +617,39 @@ textarea:focus {
 .meru-visual-panel {
   display: grid;
   gap: 20px;
+  align-self: start;
+  position: sticky;
+  top: 24px;
 }
 
 .meru-image {
   width: 100%;
-  max-height: 320px;
-  object-fit: contain;
+  height: 380px;
+  object-fit: cover;
+  object-position: center 72%;
   border-radius: 24px;
-  padding: 14px;
+  padding: 8px;
   background: color-mix(in srgb, var(--paper-strong) 84%, transparent);
   border: 1px solid var(--line);
+}
+
+.meru-detail-card {
+  padding: 18px;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--paper-strong) 84%, transparent);
+  border: 1px solid var(--line);
+}
+
+.meru-detail-card h5 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+
+.meru-detail-list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.7;
 }
 
 .meru-note {
@@ -648,12 +678,21 @@ textarea:focus {
   .hero, .overview-grid, .panel-grid, .two-column, .gana-grid, .comparison-grid, .result-grid, .analysis-summary, .pada-list {
     grid-template-columns: 1fr;
   }
+
+  .meru-visual-panel {
+    position: static;
+  }
+
+  .meru-image {
+    height: 300px;
+    object-position: center 70%;
+  }
 }
 
 @media (max-width: 720px) {
   .site-shell { width: min(100% - 24px, 1180px); }
 
-  .topbar, .topnav, .tab-buttons, .mini-actions, .hero-actions, .hero-metrics, .memory-strip, .nav-tools {
+  .topbar, .mini-actions, .hero-actions, .hero-metrics, .memory-strip {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -662,7 +701,29 @@ textarea:focus {
     align-items: flex-start;
   }
 
-  .tab-button, .primary-button, .secondary-button, .ghost-button { width: 100%; }
+  .topnav,
+  .tab-buttons,
+  .nav-tools {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+  }
+
+  .topnav a,
+  .tab-button,
+  .nav-tools .icon-button {
+    flex: 0 0 auto;
+  }
+
+  .primary-button, .secondary-button, .ghost-button { width: 100%; }
+
+  .tab-button {
+    width: auto;
+  }
   .word-table,
   .word-table thead,
   .word-table tbody,
