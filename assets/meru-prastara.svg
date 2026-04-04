@@ -1,0 +1,56 @@
+<svg width="720" height="520" viewBox="0 0 720 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="720" height="520" rx="28" fill="#FFF8EE"/>
+  <text x="360" y="64" text-anchor="middle" font-family="Sora, Arial, sans-serif" font-size="26" font-weight="700" fill="#8F2F27">
+    Meru Prastara
+  </text>
+  <text x="360" y="94" text-anchor="middle" font-family="Sora, Arial, sans-serif" font-size="14" fill="#6B5A49">
+    Ancient combinational triangle
+  </text>
+
+  <g font-family="Sora, Arial, sans-serif" font-size="22" font-weight="700" fill="#294876" text-anchor="middle">
+    <text x="360" y="150">1</text>
+
+    <text x="320" y="196">1</text>
+    <text x="400" y="196">1</text>
+
+    <text x="280" y="242">1</text>
+    <text x="360" y="242">2</text>
+    <text x="440" y="242">1</text>
+
+    <text x="240" y="288">1</text>
+    <text x="320" y="288">3</text>
+    <text x="400" y="288">3</text>
+    <text x="480" y="288">1</text>
+
+    <text x="200" y="334">1</text>
+    <text x="280" y="334">4</text>
+    <text x="360" y="334">6</text>
+    <text x="440" y="334">4</text>
+    <text x="520" y="334">1</text>
+
+    <text x="160" y="380">1</text>
+    <text x="240" y="380">5</text>
+    <text x="320" y="380">10</text>
+    <text x="400" y="380">10</text>
+    <text x="480" y="380">5</text>
+    <text x="560" y="380">1</text>
+  </g>
+
+  <g stroke="#C98A52" stroke-width="2" opacity="0.8">
+    <path d="M360 126L320 172L280 218L240 264L200 310L160 356"/>
+    <path d="M360 126L400 172L440 218L480 264L520 310L560 356"/>
+    <path d="M320 172L400 172"/>
+    <path d="M280 218L360 218L440 218"/>
+    <path d="M240 264L320 264L400 264L480 264"/>
+    <path d="M200 310L280 310L360 310L440 310L520 310"/>
+    <path d="M160 356L240 356L320 356L400 356L480 356L560 356"/>
+  </g>
+
+  <rect x="120" y="420" width="480" height="58" rx="18" fill="#F3E5CF"/>
+  <text x="360" y="444" text-anchor="middle" font-family="Sora, Arial, sans-serif" font-size="15" font-weight="600" fill="#8F2F27">
+    Like Pascal's Triangle, each inner value comes from the two values above it.
+  </text>
+  <text x="360" y="466" text-anchor="middle" font-family="Sora, Arial, sans-serif" font-size="14" fill="#6B5A49">
+    This visual expresses recursive counting and combinational growth.
+  </text>
+</svg>
