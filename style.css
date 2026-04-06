@@ -238,6 +238,20 @@ html[lang="hi"] .section-heading h2 {
   font-size: 1.35rem;
 }
 
+#numberBinary,
+#numberLaghuGuru,
+#numberSymbols,
+#numberBitLength {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.35;
+}
+
+#numberLaghuGuru,
+#numberSymbols {
+  font-size: 1.05rem;
+}
+
 .hero-panel {
   padding: 26px;
   display: grid;
@@ -461,6 +475,42 @@ textarea:focus {
   font-weight: 600;
 }
 
+.number-breakdown {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.number-breakdown-card {
+  display: grid;
+  grid-template-columns: minmax(72px, 120px) 1.5fr 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper-strong) 86%, transparent);
+}
+
+.number-breakdown-card strong {
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+  line-height: 1.45;
+}
+
+.number-breakdown-label {
+  font-weight: 700;
+  color: var(--saffron);
+  font-size: 1.05rem;
+}
+
+.number-breakdown-card span:last-child,
+.number-breakdown-card span:nth-child(3) {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
 .analysis-output { margin-top: 22px; }
 
 .analysis-summary article {
@@ -676,6 +726,10 @@ textarea:focus {
 
 @media (max-width: 980px) {
   .hero, .overview-grid, .panel-grid, .two-column, .gana-grid, .comparison-grid, .result-grid, .analysis-summary, .pada-list {
+    grid-template-columns: 1fr;
+  }
+
+  .number-breakdown-card {
     grid-template-columns: 1fr;
   }
 

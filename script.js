@@ -23,7 +23,7 @@ const CONSONANTS = new Set([
 const translations = {
   en: {
     heroTitle: "Pingala Prism: where Sanskrit chandas becomes digital logic.",
-    heroText: "Explore how Pingala transformed poetic rhythm into a system of pattern, combination, and binary-style thought. This yatra connects shloka, gana, Meru Prastara, and modern computing in one immersive interface.",
+    heroText: "Explore how Pingala transformed poetic rhythm into a system of pattern, combination, and binary-style thought. This yatra connects shloka, gaṇa, Meru Prastara, and modern computing in one immersive interface.",
     exploreBtn: "Explore Vidya Tabs",
     analyzeBtn: "Open Shloka Analyzer",
     metricEra: "Approximate era of Pingala",
@@ -36,16 +36,16 @@ const translations = {
     overview2Title: "How do we list every Laghu-Guru possibility?",
     overview2Text: "Sanskrit meter depends on ordered syllables. Pingala offered ways to generate, organize, and count these combinations with elegant clarity.",
     overview3Title: "A bridge from kavya to computation",
-    overview3Text: "The same logic supports ganas, Meru Prastara, binary comparison, and the timeless connection between ancient insight and modern systems.",
+    overview3Text: "The same logic supports gaṇas, Meru Prastara, binary comparison, and the timeless connection between ancient insight and modern systems.",
     tabsHeading: "Deep-dive features, tools, and visual learning",
     binaryTitle: "Convert Pingala patterns into binary",
     binaryText: "Laghu maps to 0 and Guru maps to 1. Enter L/G, Sanskrit symbols, or raw binary to see how ancient chandas speaks the language of computation.",
+    numberTitle: "Convert words or numbers into binary and Pingala form",
+    numberText: "Enter any decimal number or a short word to view its binary form and its Pingala-style Laghu-Guru expression.",
     timelineTitle: "Why this matters today",
     timelineText: "Pingala's two-state logic, combinatorics, and ordered arrangement echo ideas now seen in data encoding, algorithmic thinking, and computer science.",
     analyzerTitle: "Analyze full Sanskrit shlokas, not just single words",
     analyzerText: "Paste a shloka, half-verse, or a single word. The tool will break it into lines or padas, then classify syllables as Laghu or Guru using chandas rules.",
-    ganaTitle: "The eight ganas of Sanskrit poetry",
-    ganaText: "Ganas arrange syllables into groups of three. Since each syllable can be Laghu or Guru, 2³ gives us eight fundamental patterns.",
     meruTitle: "Meru Prastara and combinational brilliance",
     meruText: "Pingala's method also points toward combination counting. For n syllables, the total possible patterns equal 2ⁿ. Meru Prastara anticipates triangular arrangement ideas later compared to Pascal's Triangle."
   },
@@ -68,12 +68,12 @@ const translations = {
     tabsHeading: "गहन अध्ययन के features, tools और visuals",
     binaryTitle: "पिंगल patterns को binary में बदलें",
     binaryText: "लघु = 0 और गुरु = 1. L/G, संस्कृत संकेत या raw binary डालकर देखें कि ancient chandas computation की भाषा कैसे बोलता है।",
+    numberTitle: "संख्या को binary और पिंगल रूप में बदलें",
+    numberText: "कोई भी दशमलव संख्या डालिए और उसका modern binary रूप तथा Pingala-style लघु-गुरु रूप देखिए। इससे arithmetic और chandas का संबंध स्पष्ट होता है।",
     timelineTitle: "आज यह क्यों महत्वपूर्ण है",
     timelineText: "पिंगल की two-state logic, combinatorics और ordered arrangement आज data encoding, algorithmic thinking और computer science में गूंजती है।",
     analyzerTitle: "केवल शब्द नहीं, पूरे संस्कृत श्लोक का विश्लेषण",
     analyzerText: "श्लोक, अर्धश्लोक या एक शब्द पेस्ट करें। यह tool उसे lines या पादों में तोड़कर chandas rules के अनुसार लघु-गुरु विश्लेषण करेगा।",
-    ganaTitle: "संस्कृत काव्य के आठ गण",
-    ganaText: "गण तीन syllables के समूह हैं। प्रत्येक syllable लघु या गुरु हो सकता है, इसलिए 2³ से आठ मूल patterns बनते हैं।",
     meruTitle: "मेरु प्रस्तार और संयोजन की प्रतिभा",
     meruText: "पिंगल की विधि combination counting की ओर भी संकेत करती है। n syllables के लिए कुल patterns 2ⁿ होते हैं। मेरु प्रस्तार बाद में Pascal's Triangle से तुलना किए जाने वाले triangular arrangement की पूर्वछाया है।"
   }
@@ -82,6 +82,7 @@ const translations = {
 document.addEventListener("DOMContentLoaded", () => {
   initTabs();
   initPatternConverter();
+  initNumberConverter();
   initAnalyzer();
   initCombinationGenerator();
   initThemeToggle();
@@ -174,6 +175,7 @@ function initPatternConverter() {
       convertPattern();
     }
   });
+
   reverseInput?.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       reverseConvertPattern();
@@ -207,26 +209,16 @@ function convertPattern() {
     return;
   }
 
-  const normalized = raw
-    .replace(/\s+/g, "")
-    .replaceAll("L", "0")
-    .replaceAll("l", "0")
-    .replaceAll("G", "1")
-    .replaceAll("g", "1")
-    .replaceAll("।", "0")
-    .replaceAll("ऽ", "1");
+  const normalized = normalizePattern(raw);
 
-  if (!/^[01]+$/.test(normalized)) {
+  if (!normalized) {
     binaryNode.textContent = "Invalid";
     meaningNode.textContent = "Use L/G, ।/ऽ, or 0/1 only.";
     return;
   }
 
   binaryNode.textContent = normalized;
-  meaningNode.textContent = normalized
-    .split("")
-    .map((digit) => (digit === "0" ? "L" : "G"))
-    .join("");
+  meaningNode.textContent = binaryToLG(normalized);
 }
 
 function appendPatternSymbol(symbol) {
@@ -254,10 +246,107 @@ function reverseConvertPattern() {
     return;
   }
 
-  const laghuGuru = raw.split("").map((digit) => (digit === "0" ? "L" : "G")).join("");
-  const symbols = raw.replaceAll("0", "।").replaceAll("1", "ऽ");
-  patternNode.textContent = laghuGuru;
-  symbolsNode.textContent = symbols;
+  patternNode.textContent = binaryToLG(raw);
+  symbolsNode.textContent = binaryToSymbols(raw);
+}
+
+function initNumberConverter() {
+  const input = document.getElementById("numberInput");
+  const button = document.getElementById("convertNumberButton");
+
+  button?.addEventListener("click", convertNumber);
+  input?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      convertNumber();
+    }
+  });
+
+  document.querySelectorAll("[data-number-example]").forEach((node) => {
+    node.addEventListener("click", () => {
+      input.value = node.dataset.numberExample || "";
+      convertNumber();
+    });
+  });
+}
+
+function convertNumber() {
+  const input = document.getElementById("numberInput");
+  const binaryNode = document.getElementById("numberBinary");
+  const lgNode = document.getElementById("numberLaghuGuru");
+  const symbolsNode = document.getElementById("numberSymbols");
+  const bitLengthNode = document.getElementById("numberBitLength");
+  const messageNode = document.getElementById("numberMessage");
+  const breakdownNode = document.getElementById("numberBreakdown");
+  const raw = (input?.value || "").trim();
+
+  if (!raw) {
+    resetNumberResults("Type a number or short word to begin.");
+    return;
+  }
+
+  if (/^\d+$/.test(raw)) {
+    const value = Number(raw);
+    const binary = value.toString(2);
+
+    binaryNode.textContent = binary;
+    lgNode.textContent = binaryToLG(binary);
+    symbolsNode.textContent = binaryToSymbols(binary);
+    bitLengthNode.textContent = `${binary.length} bits`;
+    messageNode.textContent = `${value} in decimal becomes ${binary} in binary and ${binaryToLG(binary)} in Pingala pattern.`;
+    breakdownNode.innerHTML = "";
+    breakdownNode.classList.add("hidden");
+    return;
+  }
+
+  const binaryGroups = textToBinaryGroups(raw);
+  if (!binaryGroups.length) {
+    resetNumberResults("Please enter a valid number or word.");
+    return;
+  }
+
+  const totalBits = binaryGroups.map((entry) => entry.binary.replace(/\s+/g, "")).join("").length;
+  const totalBytes = binaryGroups.reduce((sum, entry) => sum + entry.byteCount, 0);
+
+  binaryNode.textContent = `${binaryGroups.length} chars / ${totalBytes} bytes`;
+  lgNode.textContent = "See breakdown below";
+  symbolsNode.textContent = "नीचे देखें";
+  bitLengthNode.textContent = `${totalBits} bits`;
+  messageNode.textContent = `"${raw}" was converted using UTF-8 bytes. Detailed binary, L/G, and Pingala mapping is shown below.`;
+  breakdownNode.innerHTML = binaryGroups.map((entry) => `
+    <article class="number-breakdown-card">
+      <span class="number-breakdown-label">${escapeHtml(entry.label)}</span>
+      <strong>${entry.binary}</strong>
+      <span>${binaryToLG(entry.binary)}</span>
+      <span class="devanagari">${binaryToSymbols(entry.binary)}</span>
+    </article>
+  `).join("");
+  breakdownNode.classList.remove("hidden");
+}
+
+function resetNumberResults(message) {
+  document.getElementById("numberBinary").textContent = "-";
+  document.getElementById("numberLaghuGuru").textContent = "-";
+  document.getElementById("numberSymbols").textContent = "-";
+  document.getElementById("numberBitLength").textContent = "-";
+  document.getElementById("numberMessage").textContent = message;
+  document.getElementById("numberBreakdown").innerHTML = "";
+  document.getElementById("numberBreakdown").classList.add("hidden");
+}
+
+function textToBinaryGroups(text) {
+  if (!text) {
+    return [];
+  }
+
+  const encoder = new TextEncoder();
+  return Array.from(text).map((char) => {
+    const bytes = Array.from(encoder.encode(char));
+    return {
+      label: char === " " ? "space" : char,
+      byteCount: bytes.length,
+      binary: bytes.map((value) => value.toString(2).padStart(8, "0")).join(" ")
+    };
+  });
 }
 
 function initAnalyzer() {
@@ -372,32 +461,40 @@ function extractSyllables(text) {
     let syllable = "";
 
     if (/\s/.test(cleanText[i])) {
-      i++;
+      i += 1;
       continue;
     }
 
     while (i < cleanText.length && CONSONANTS.has(cleanText[i])) {
       syllable += cleanText[i];
-      i++;
+      i += 1;
 
       if (i < cleanText.length && cleanText[i] === HALANT && i + 1 < cleanText.length && CONSONANTS.has(cleanText[i + 1])) {
         syllable += cleanText[i];
-        i++;
+        i += 1;
       } else {
         break;
       }
     }
 
-    if (i < cleanText.length && (MATRAS.short.includes(cleanText[i]) || MATRAS.long.includes(cleanText[i]) || INDEPENDENT_VOWELS.short.includes(cleanText[i]) || INDEPENDENT_VOWELS.long.includes(cleanText[i]))) {
+    if (
+      i < cleanText.length &&
+      (
+        MATRAS.short.includes(cleanText[i]) ||
+        MATRAS.long.includes(cleanText[i]) ||
+        INDEPENDENT_VOWELS.short.includes(cleanText[i]) ||
+        INDEPENDENT_VOWELS.long.includes(cleanText[i])
+      )
+    ) {
       syllable += cleanText[i];
-      i++;
+      i += 1;
     }
 
     while (i < cleanText.length && CONSONANTS.has(cleanText[i]) && i + 1 < cleanText.length && cleanText[i + 1] === HALANT) {
       syllable += cleanText[i];
-      i++;
+      i += 1;
       syllable += cleanText[i];
-      i++;
+      i += 1;
 
       if (i < cleanText.length && CONSONANTS.has(cleanText[i]) && i + 1 < cleanText.length && cleanText[i + 1] === HALANT) {
         break;
@@ -406,12 +503,12 @@ function extractSyllables(text) {
 
     if (i < cleanText.length && (cleanText[i] === ANUSVARA || cleanText[i] === VISARGA)) {
       syllable += cleanText[i];
-      i++;
+      i += 1;
     }
 
     if (!syllable) {
       syllable = cleanText[i];
-      i++;
+      i += 1;
     }
 
     syllables.push(syllable);
@@ -425,7 +522,7 @@ function classifySyllable(syllable) {
   let vowelChar = "";
   let vowelIndex = -1;
 
-  for (let i = 0; i < syllable.length; i++) {
+  for (let i = 0; i < syllable.length; i += 1) {
     const char = syllable[i];
     if (INDEPENDENT_VOWELS.short.includes(char) || MATRAS.short.includes(char)) {
       vowelType = "short";
@@ -534,13 +631,34 @@ function generateCombinations() {
   countNode.textContent = `${count} syllable${count > 1 ? "s" : ""} create ${total} patterns.`;
 
   const combinations = [];
-  for (let value = 0; value < total; value++) {
+  for (let value = 0; value < total; value += 1) {
     const binary = value.toString(2).padStart(count, "0");
-    const symbols = binary.replaceAll("0", "।").replaceAll("1", "ऽ");
+    const symbols = binaryToSymbols(binary);
     combinations.push(`<span class="combination-chip">${symbols} <strong>${binary}</strong></span>`);
   }
 
   listNode.innerHTML = combinations.join("");
+}
+
+function normalizePattern(raw) {
+  const normalized = raw
+    .replace(/\s+/g, "")
+    .replaceAll("L", "0")
+    .replaceAll("l", "0")
+    .replaceAll("G", "1")
+    .replaceAll("g", "1")
+    .replaceAll("।", "0")
+    .replaceAll("ऽ", "1");
+
+  return /^[01]+$/.test(normalized) ? normalized : "";
+}
+
+function binaryToLG(binary) {
+  return binary.split("").map((digit) => (digit === "0" ? "L" : "G")).join("");
+}
+
+function binaryToSymbols(binary) {
+  return binary.replaceAll("0", "।").replaceAll("1", "ऽ");
 }
 
 function decodeHtml(value) {

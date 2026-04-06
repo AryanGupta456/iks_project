@@ -124,8 +124,8 @@
         <div class="tabs-shell">
           <div class="tab-buttons" role="tablist" aria-label="Pingala feature tabs">
             <button class="tab-button active" type="button" data-tab-target="tab-binary" role="tab" aria-selected="true">Binary Explorer</button>
+            <button class="tab-button" type="button" data-tab-target="tab-number" role="tab" aria-selected="false">Word & Number Converter</button>
             <button class="tab-button" type="button" data-tab-target="tab-analyzer" role="tab" aria-selected="false">Shloka Analyzer</button>
-            <button class="tab-button" type="button" data-tab-target="tab-gana" role="tab" aria-selected="false">Gana System</button>
             <button class="tab-button" type="button" data-tab-target="tab-math" role="tab" aria-selected="false">Meru Prastara</button>
           </div>
 
@@ -200,8 +200,75 @@
                   <article class="timeline-card">
                     <h4 data-i18n="timelineTitle">Why this matters today</h4>
                     <p data-i18n="timelineText">
-                      Pingala’s two-state logic, combinatorics, and ordered arrangement echo
+                      Pingala's two-state logic, combinatorics, and ordered arrangement echo
                       ideas now seen in data encoding, algorithmic thinking, and computer science.
+                    </p>
+                  </article>
+                </div>
+              </div>
+            </section>
+
+            <section class="tab-panel" id="tab-number" role="tabpanel">
+              <div class="panel-grid">
+                <div class="panel-copy">
+                  <p class="eyebrow">Tab 2</p>
+                  <h3 data-i18n="numberTitle">Convert numbers or words into binary and Pingala form</h3>
+                  <p data-i18n="numberText">
+                    Enter any decimal number or a short word to view its binary form and its
+                    Pingala-style Laghu-Guru expression.
+                  </p>
+
+                  <div class="converter-card">
+                    <label for="numberInput">Number or word</label>
+                    <input id="numberInput" type="text" placeholder="Examples: 13, Rama, पिंगल">
+                    <div class="mini-actions">
+                      <button class="primary-button" type="button" id="convertNumberButton">Convert</button>
+                      <button class="ghost-button" type="button" data-number-example="5">5</button>
+                      <button class="ghost-button" type="button" data-number-example="8">8</button>
+                      <button class="ghost-button" type="button" data-number-example="13">13</button>
+                      <button class="ghost-button" type="button" data-number-example="Rama">Rama</button>
+                      <button class="ghost-button devanagari" type="button" data-number-example="पिंगल">पिंगल</button>
+                    </div>
+
+                    <div class="result-grid">
+                      <article>
+                        <span>Binary</span>
+                        <strong id="numberBinary">-</strong>
+                      </article>
+                      <article>
+                        <span>L/G Pattern</span>
+                        <strong id="numberLaghuGuru">-</strong>
+                      </article>
+                      <article>
+                        <span>Pingala Symbols</span>
+                        <strong class="devanagari" id="numberSymbols">-</strong>
+                      </article>
+                      <article>
+                        <span>Bit Count</span>
+                        <strong id="numberBitLength">-</strong>
+                      </article>
+                    </div>
+                    <p class="inline-message" id="numberMessage">Type a number or short word to begin.</p>
+                    <div class="number-breakdown hidden" id="numberBreakdown"></div>
+                  </div>
+                </div>
+
+                <div class="panel-side">
+                  <article class="reference-card">
+                    <h4>How this mapping works</h4>
+                    <div class="pattern-table">
+                      <div><span>Decimal</span><strong>13</strong></div>
+                      <div><span>Binary</span><strong>1101</strong></div>
+                      <div><span>L/G</span><strong>GGLG</strong></div>
+                      <div><span>Pingala</span><strong class="devanagari">ऽऽ।ऽ</strong></div>
+                    </div>
+                  </article>
+
+                  <article class="timeline-card">
+                    <h4>Ancient-modern bridge</h4>
+                    <p>
+                      Modern computers store quantity in binary digits. Pingala expresses pattern
+                      through Laghu and Guru. The symbols differ, but the two-state logic feels strikingly related.
                     </p>
                   </article>
                 </div>
@@ -211,7 +278,7 @@
             <section class="tab-panel" id="tab-analyzer" role="tabpanel">
               <div class="panel-grid analyzer-layout">
                 <div class="panel-copy">
-                  <p class="eyebrow">Tab 2</p>
+                  <p class="eyebrow">Tab 3</p>
                   <h3 id="analyzer" data-i18n="analyzerTitle">Analyze full Sanskrit shlokas, not just single words</h3>
                   <p data-i18n="analyzerText">
                     Paste a shloka, half-verse, or a single word. The tool will break it into
@@ -227,7 +294,7 @@
                       <button class="ghost-button devanagari" type="button" data-sanskrit-example="अग्निम्">अग्निम्</button>
                       <button class="ghost-button devanagari" type="button" data-sanskrit-example="कर्मण्येवाधिकारस्ते मा फलेषु कदाचन ।&#10;मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि ॥">श्लोक</button>
                     </div>
-                    <p class="inline-message" id="analyzerMessage">Supports vowels, anusvāra, visarga, consonant clusters, and multi-line shloka flow.</p>
+                    <p class="inline-message" id="analyzerMessage">Supports vowels, anusvara, visarga, consonant clusters, and multi-line shloka flow.</p>
                   </div>
                 </div>
 
@@ -237,7 +304,7 @@
                     <ul>
                       <li>Short vowels usually create Laghu.</li>
                       <li>Long vowels create Guru.</li>
-                      <li>Anusvāra or visarga make a syllable Guru.</li>
+                      <li>Anusvara or visarga make a syllable Guru.</li>
                       <li>Consonant clusters after a short vowel make it Guru.</li>
                       <li>Shloka input is analyzed line by line for clearer study.</li>
                     </ul>
@@ -262,40 +329,15 @@
               </div>
             </section>
 
-            <section class="tab-panel" id="tab-gana" role="tabpanel">
-              <p class="eyebrow">Tab 3</p>
-              <h3 data-i18n="ganaTitle">The eight gaṇas of Sanskrit poetry</h3>
-              <p class="section-note" data-i18n="ganaText">
-                Gaṇas arrange syllables into groups of three. Since each syllable can be Laghu
-                or Guru, 2³ gives us eight fundamental patterns.
-              </p>
-
-              <div class="gana-grid">
-                <article class="gana-card"><span>यगण</span><strong>।ऽऽ</strong><p>Laghu Guru Guru</p></article>
-                <article class="gana-card"><span>मगण</span><strong>ऽऽऽ</strong><p>Guru Guru Guru</p></article>
-                <article class="gana-card"><span>तगण</span><strong>ऽऽ।</strong><p>Guru Guru Laghu</p></article>
-                <article class="gana-card"><span>रगण</span><strong>ऽ।ऽ</strong><p>Guru Laghu Guru</p></article>
-                <article class="gana-card"><span>जगण</span><strong>।ऽ।</strong><p>Laghu Guru Laghu</p></article>
-                <article class="gana-card"><span>भगण</span><strong>ऽ।।</strong><p>Guru Laghu Laghu</p></article>
-                <article class="gana-card"><span>नगण</span><strong>।।।</strong><p>Laghu Laghu Laghu</p></article>
-                <article class="gana-card"><span>सगण</span><strong>।।ऽ</strong><p>Laghu Laghu Guru</p></article>
-              </div>
-
-              <div class="memory-strip">
-                <span>Smriti formula</span>
-                <strong class="devanagari">यमाताराजभानसलगाम्</strong>
-              </div>
-            </section>
-
             <section class="tab-panel" id="tab-math" role="tabpanel">
               <div class="panel-grid two-column">
                 <article class="info-panel">
                   <p class="eyebrow">Tab 4</p>
                   <h3 data-i18n="meruTitle">Meru Prastara and combinational brilliance</h3>
                   <p data-i18n="meruText">
-                    Pingala’s method also points toward combination counting. For n syllables,
+                    Pingala's method also points toward combination counting. For n syllables,
                     the total possible patterns equal 2ⁿ. Meru Prastara anticipates triangular
-                    arrangement ideas later compared to Pascal’s Triangle.
+                    arrangement ideas later compared to Pascal's Triangle.
                   </p>
 
                   <div class="count-tool">
@@ -321,13 +363,13 @@
                     </ul>
                   </div>
                   <p class="meru-note">
-                    Meru Prastara and Pascal’s Triangle both arrange combinations in triangular
+                    Meru Prastara and Pascal's Triangle both arrange combinations in triangular
                     form. Each row grows from the row above, showing how structured counting
                     emerges from simple recursive logic.
                   </p>
                   <div class="comparison-grid">
                     <div>
-                      <span>Pingala’s system</span>
+                      <span>Pingala's system</span>
                       <p>Laghu and Guru</p>
                       <p>Poetry, chandas, and pattern logic</p>
                       <p>Ancient Bharatiya knowledge</p>
