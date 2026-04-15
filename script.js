@@ -82,6 +82,7 @@ const translations = {
 document.addEventListener("DOMContentLoaded", () => {
   initTabs();
   initTopNavLinks();
+  initMobileTopbarToggle();
   initRevealAnimations();
   initPatternConverter();
   initNumberConverter();
@@ -146,6 +147,48 @@ function initTopNavLinks() {
       openLinkedTab(analyzerLink);
     }
   }
+}
+
+function initMobileTopbarToggle() {
+  const topbar = document.querySelector(".topbar");
+  const mobileQuery = window.matchMedia("(max-width: 720px)");
+
+  if (!topbar) {
+    return;
+  }
+
+  function syncMobileTopbarState() {
+    if (mobileQuery.matches) {
+      document.body.classList.add("mobile-topbar-visible");
+      document.body.classList.remove("mobile-topbar-hidden");
+    } else {
+      document.body.classList.remove("mobile-topbar-visible", "mobile-topbar-hidden");
+    }
+  }
+
+  function handlePointerDown(event) {
+    if (!mobileQuery.matches) {
+      return;
+    }
+
+    const clickedInsideTopbar = topbar.contains(event.target);
+    const isHidden = document.body.classList.contains("mobile-topbar-hidden");
+
+    if (isHidden) {
+      document.body.classList.remove("mobile-topbar-hidden");
+      document.body.classList.add("mobile-topbar-visible");
+      return;
+    }
+
+    if (!clickedInsideTopbar) {
+      document.body.classList.remove("mobile-topbar-visible");
+      document.body.classList.add("mobile-topbar-hidden");
+    }
+  }
+
+  syncMobileTopbarState();
+  mobileQuery.addEventListener("change", syncMobileTopbarState);
+  document.addEventListener("pointerdown", handlePointerDown);
 }
 
 function setActiveTab(activeButton, buttons, panels) {
