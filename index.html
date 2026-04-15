@@ -26,7 +26,7 @@
       <nav class="topnav">
         <a href="#overview">Overview</a>
         <a href="#tabs">Features</a>
-        <a href="#analyzer">Shloka Lab</a>
+        <a href="#analyzer" data-open-tab="tab-analyzer">Shloka Lab</a>
       </nav>
 
       <div class="nav-tools">
@@ -37,7 +37,7 @@
 
     <main>
       <section class="hero" id="home">
-        <div class="hero-copy">
+        <div class="hero-copy" data-reveal="up">
           <p class="eyebrow">Indian Knowledge Systems | Bharatiya ganita imagination</p>
           <h1 data-i18n="heroTitle">Pingala Prism: where Sanskrit chandas becomes digital logic.</h1>
           <p class="hero-text" data-i18n="heroText">
@@ -48,7 +48,7 @@
 
           <div class="hero-actions">
             <a class="primary-button" href="#tabs" data-i18n="exploreBtn">Explore Vidya Tabs</a>
-            <a class="secondary-button" href="#analyzer" data-i18n="analyzeBtn">Open Shloka Analyzer</a>
+            <a class="secondary-button" href="#analyzer" data-i18n="analyzeBtn" data-open-tab="tab-analyzer">Open Shloka Analyzer</a>
           </div>
 
           <div class="hero-metrics">
@@ -67,7 +67,7 @@
           </div>
         </div>
 
-        <aside class="hero-panel">
+        <aside class="hero-panel" data-reveal="up" data-reveal-delay="1">
           <div class="quote-card">
             <p class="card-label">Maha insight</p>
             <h2 data-i18n="insightTitle">Modern technology has roots in ancient wisdom.</h2>
@@ -87,7 +87,7 @@
       </section>
 
       <section class="overview-grid" id="overview">
-        <article class="info-card">
+        <article class="info-card" data-reveal="up">
           <p class="eyebrow">Acharya Pingala</p>
           <h3 data-i18n="overview1Title">A poet-scientist of pattern and rhythm</h3>
           <p data-i18n="overview1Text">
@@ -96,7 +96,7 @@
           </p>
         </article>
 
-        <article class="info-card">
+        <article class="info-card" data-reveal="up" data-reveal-delay="1">
           <p class="eyebrow">Samasya</p>
           <h3 data-i18n="overview2Title">How do we list every Laghu-Guru possibility?</h3>
           <p data-i18n="overview2Text">
@@ -105,7 +105,7 @@
           </p>
         </article>
 
-        <article class="info-card">
+        <article class="info-card" data-reveal="up" data-reveal-delay="2">
           <p class="eyebrow">Prabhav</p>
           <h3 data-i18n="overview3Title">A bridge from kavya to computation</h3>
           <p data-i18n="overview3Text">
@@ -116,12 +116,12 @@
       </section>
 
       <section class="tabbed-section" id="tabs">
-        <div class="section-heading">
+        <div class="section-heading" data-reveal="up">
           <p class="eyebrow">Interactive adhyayan tabs</p>
           <h2 data-i18n="tabsHeading">Deep-dive features, tools, and visual learning</h2>
         </div>
 
-        <div class="tabs-shell">
+        <div class="tabs-shell" data-reveal="up" data-reveal-delay="1">
           <div class="tab-buttons" role="tablist" aria-label="Pingala feature tabs">
             <button class="tab-button active" type="button" data-tab-target="tab-binary" role="tab" aria-selected="true">Binary Explorer</button>
             <button class="tab-button" type="button" data-tab-target="tab-number" role="tab" aria-selected="false">Word & Number Converter</button>
@@ -292,6 +292,7 @@
                       <button class="primary-button" type="button" id="analyzeButton">Analyze</button>
                       <button class="ghost-button devanagari" type="button" data-sanskrit-example="रामः">रामः</button>
                       <button class="ghost-button devanagari" type="button" data-sanskrit-example="अग्निम्">अग्निम्</button>
+                      <button class="ghost-button devanagari" type="button" data-sanskrit-example="वक्रतुण्ड महाकाय सूर्यकोटिसमप्रभ ।&#10;निर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा ॥">गणेश</button>
                       <button class="ghost-button devanagari" type="button" data-sanskrit-example="कर्मण्येवाधिकारस्ते मा फलेषु कदाचन ।&#10;मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि ॥">श्लोक</button>
                     </div>
                     <p class="inline-message" id="analyzerMessage">Supports vowels, anusvara, visarga, consonant clusters, and multi-line shloka flow.</p>
@@ -309,10 +310,19 @@
                       <li>Shloka input is analyzed line by line for clearer study.</li>
                     </ul>
                   </article>
+                  <article class="reference-card analyzer-example-card">
+                    <h4>Practice examples</h4>
+                    <p>Try a single word, a mantra fragment, or a complete shloka to compare how the syllable flow changes.</p>
+                    <div class="analyzer-example-list">
+                      <span class="example-pill devanagari">रामः</span>
+                      <span class="example-pill devanagari">अग्निम्</span>
+                      <span class="example-pill devanagari">वक्रतुण्ड महाकाय</span>
+                    </div>
+                  </article>
                 </div>
               </div>
 
-              <div class="analysis-output hidden" id="analysisOutput">
+              <div class="analysis-output hidden" id="analysisOutput" data-reveal="up">
                 <div class="analysis-summary">
                   <article>
                     <span>Total pattern</span>

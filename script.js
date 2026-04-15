@@ -81,6 +81,8 @@ const translations = {
 
 document.addEventListener("DOMContentLoaded", () => {
   initTabs();
+  initTopNavLinks();
+  initRevealAnimations();
   initPatternConverter();
   initNumberConverter();
   initAnalyzer();
@@ -96,17 +98,123 @@ function initTabs() {
 
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
-      const target = button.dataset.tabTarget;
-      buttons.forEach((item) => {
-        item.classList.remove("active");
-        item.setAttribute("aria-selected", "false");
-      });
-      panels.forEach((panel) => panel.classList.remove("active"));
-      button.classList.add("active");
-      button.setAttribute("aria-selected", "true");
-      document.getElementById(target)?.classList.add("active");
+      setActiveTab(button, buttons, panels);
     });
   });
+}
+
+function initTopNavLinks() {
+  const buttons = document.querySelectorAll(".tab-button");
+  const panels = document.querySelectorAll(".tab-panel");
+  const tabLinks = document.querySelectorAll("[data-open-tab]");
+
+  function openLinkedTab(link) {
+    const targetTabId = link.dataset.openTab;
+    if (!targetTabId) {
+      return;
+    }
+
+    const targetButton = document.querySelector(`.tab-button[data-tab-target="${targetTabId}"]`);
+    const targetPanel = document.getElementById(targetTabId);
+
+    if (!targetButton || !targetPanel) {
+      return;
+    }
+
+    setActiveTab(targetButton, buttons, panels);
+
+    requestAnimationFrame(() => {
+      const anchorTarget = link.getAttribute("href");
+      if (anchorTarget?.startsWith("#")) {
+        document.querySelector(anchorTarget)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        targetPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  }
+
+  tabLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      openLinkedTab(link);
+    });
+  });
+
+  if (window.location.hash === "#analyzer") {
+    const analyzerLink = document.querySelector('[data-open-tab="tab-analyzer"]');
+    if (analyzerLink) {
+      openLinkedTab(analyzerLink);
+    }
+  }
+}
+
+function setActiveTab(activeButton, buttons, panels) {
+  const target = activeButton.dataset.tabTarget;
+
+  buttons.forEach((button) => {
+    const isActive = button === activeButton;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-selected", String(isActive));
+  });
+
+  panels.forEach((panel) => {
+    const isActive = panel.id === target;
+    panel.classList.toggle("active", isActive);
+    if (isActive) {
+      panel.classList.remove("panel-enter");
+      requestAnimationFrame(() => panel.classList.add("panel-enter"));
+    }
+  });
+
+  activeButton.scrollIntoView({
+    behavior: "smooth",
+    block: "nearest",
+    inline: "center"
+  });
+}
+
+function initRevealAnimations() {
+  const revealItems = document.querySelectorAll("[data-reveal]");
+
+  if (!revealItems.length) {
+    return;
+  }
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  revealItems.forEach((item) => {
+    item.classList.add("reveal-ready");
+    const delayStep = Number(item.dataset.revealDelay || 0);
+    item.style.setProperty("--reveal-delay", `${delayStep * 90}ms`);
+  });
+
+  if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+    revealItems.forEach((item) => item.classList.add("revealed"));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) {
+        return;
+      }
+
+      entry.target.classList.add("revealed");
+      observer.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.14,
+    rootMargin: "0px 0px -8% 0px"
+  });
+
+  revealItems.forEach((item) => observer.observe(item));
+}
+
+function revealElement(element) {
+  if (!element) {
+    return;
+  }
+
+  element.classList.add("reveal-ready", "revealed");
 }
 
 function initThemeToggle() {
@@ -486,6 +594,8 @@ async function analyzeText() {
 
   messageNode.textContent = `Analyzed ${padaAnalyses.length} pada${padaAnalyses.length > 1 ? "s" : ""} and ${allClassifications.length} syllables.`;
   outputNode.classList.remove("hidden");
+  revealElement(outputNode);
+  outputNode.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function extractWords(text) {
